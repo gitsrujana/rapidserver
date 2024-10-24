@@ -1,4 +1,4 @@
-// routes/jobSeekerPersonalDetailsRoutes.js
+
 import express from 'express';
 import { addPersonalDetails, getPersonalDetails ,updatePersonalDetails, deletePersonalDetails} from '../controllers/jobSeekerPersonalDetailsController.js';
 

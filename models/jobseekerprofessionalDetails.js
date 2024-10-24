@@ -10,7 +10,7 @@ const JobseekerProfessionalDetails = sequelize.define('JobseekerProfessionalDeta
     type: DataTypes.STRING,
   },
   experience: {
-    type: DataTypes.STRING, // in months
+    type: DataTypes.STRING, 
   },
   technicalSkills: {
     type: DataTypes.STRING,
@@ -23,7 +23,7 @@ const JobseekerProfessionalDetails = sequelize.define('JobseekerProfessionalDeta
   }
 }, {
   timestamps: true,
-  tableName: 'job_seeker_professional_details' // Explicitly specify the table name
+  tableName: 'job_seeker_professional_details' 
 });
 
 export default JobseekerProfessionalDetails;

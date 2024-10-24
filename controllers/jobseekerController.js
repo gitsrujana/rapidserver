@@ -1,4 +1,4 @@
-// /controllers/jobseekerController.js
+
 
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
@@ -9,7 +9,7 @@ import dotenv from 'dotenv';
 import Joi from 'joi';
 dotenv.config();
 
-// Set up multer for photo uploads
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, 'uploads/');
@@ -26,19 +26,19 @@ const registrationSchema = Joi.object({
   firstName: Joi.string().min(1).required(),
   lastName: Joi.string().min(1).required(),
   middleName: Joi.string().allow('').optional(),
-  contactNumber: Joi.string().pattern(/^[0-9]{10}$/).required(), // Adjust regex as needed
+  contactNumber: Joi.string().pattern(/^[0-9]{10}$/).required(), 
   email: Joi.string().email().required(),
   password: Joi.string().min(6).required(),
 });
 
-// Validation schema for login
+
 const loginSchema = Joi.object({
   email: Joi.string().email().required(),
   password: Joi.string().min(6).required(),
 });
-// Register a new job seeker
+
 export const registerJobSeeker = async (req, res) => {
-  const { error } = registrationSchema.validate(req.body); // Validate request body
+  const { error } = registrationSchema.validate(req.body); 
 
   if (error) {
     return res.status(400).json({ message: error.details[0].message });
@@ -113,7 +113,7 @@ export const getAllJobSeekers = async (req, res) => {
         return res.status(404).json({ message: 'Job seeker not found' });
       }
   
-      // Update job seeker details
+
       jobSeeker.firstName = firstName;
       jobSeeker.lastName = lastName;
       jobSeeker.middleName = middleName;
@@ -128,7 +128,7 @@ export const getAllJobSeekers = async (req, res) => {
     }
   };
   
-  // DELETE a job seeker by ID
+ 
   export const deleteJobSeeker = async (req, res) => {
     const { id } = req.params;
   
@@ -139,7 +139,7 @@ export const getAllJobSeekers = async (req, res) => {
       }
   
       await jobSeeker.destroy();
-      res.status(204).send(); // No content
+      res.status(204).send(); 
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
@@ -148,11 +148,11 @@ export const getAllJobSeekers = async (req, res) => {
 
 
 
-      //login
+     
   export const loginJobSeeker = async (req, res) => {
 
 
-    const { error } = loginSchema.validate(req.body); // Validate request body
+    const { error } = loginSchema.validate(req.body); 
 
     if (error) {
       return res.status(400).json({ message: error.details[0].message });

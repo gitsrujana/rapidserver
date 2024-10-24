@@ -5,14 +5,14 @@ import Joi from 'joi';
 
 
 const personalDetailsSchema = Joi.object({
-  dateOfBirth: Joi.date().iso().required(), // ISO format YYYY-MM-DD
+  dateOfBirth: Joi.date().iso().required(), 
   gender: Joi.string().valid('Male', 'Female', 'Other').required(),
   nationality: Joi.string().required(),
   languagePreference: Joi.string().required(),
-  disabilityOrHealthCondition: Joi.string().allow('').optional(), // Optional field
+  disabilityOrHealthCondition: Joi.string().allow('').optional(), 
 });
 export const addPersonalDetails = async (req, res) => {
-  const { error } = personalDetailsSchema.validate(req.body); // Validate request body
+  const { error } = personalDetailsSchema.validate(req.body); 
 
   if (error) {
     return res.status(400).json({ message: error.details[0].message });
@@ -35,7 +35,7 @@ export const addPersonalDetails = async (req, res) => {
   }
 };
 
-// Get Personal Details
+
 export const getPersonalDetails = async (req, res) => {
   try {
     const details = await JobSeekerPersonalDetails.findAll();
@@ -45,15 +45,13 @@ export const getPersonalDetails = async (req, res) => {
   }
 };
 
-// controllers/jobSeekerPersonalDetailsController.js
 
-// Update Personal Details
 export const updatePersonalDetails = async (req, res) => {
     try {
       const { id } = req.params;
       const { dateOfBirth, gender, nationality, languagePreference, disabilityOrHealthCondition } = req.body;
   
-      // Find the record by ID and update
+      
       const updatedDetails = await JobSeekerPersonalDetails.update({
         dateOfBirth,
         gender,
@@ -61,7 +59,7 @@ export const updatePersonalDetails = async (req, res) => {
         languagePreference,
         disabilityOrHealthCondition,
       }, {
-        where: { id },  // Match based on the ID parameter
+        where: { id }, 
       });
   
       if (updatedDetails[0] === 0) {
@@ -73,15 +71,15 @@ export const updatePersonalDetails = async (req, res) => {
       res.status(500).json({ message: 'Error updating personal details', error });
     }
   };
-  // controllers/jobSeekerPersonalDetailsController.js
+  
 
-// Delete Personal Details
+
 export const deletePersonalDetails = async (req, res) => {
     try {
       const { id } = req.params;
   
       const deletedDetails = await JobSeekerPersonalDetails.destroy({
-        where: { id },  // Match based on the ID parameter
+        where: { id }, 
       });
   
       if (deletedDetails === 0) {

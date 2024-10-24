@@ -1,4 +1,4 @@
-// /routes/jobseekerRoutes.js
+
 
 import express from 'express';
 import { deleteJobSeeker, loginJobSeeker, registerJobSeeker, updateJobSeeker, uploadPhoto } from '../controllers/jobseekerController.js';
@@ -6,7 +6,7 @@ import { getAllJobSeekers ,getJobSeekerById} from '../controllers/jobseekerContr
 import { protect } from '../middleware/authMiddleware.js';
 const router = express.Router();
 
-// Register route with photo upload
+
 router.post('/register', uploadPhoto, registerJobSeeker);
 router.get('/get-all-jobseekers', getAllJobSeekers);
 router.get('/get-all-jobseekers/:id', getJobSeekerById);

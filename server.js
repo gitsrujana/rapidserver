@@ -13,20 +13,20 @@ dotenv.config();
 
 const app = express();
 
-// Middleware
+
 app.use(bodyParser.json());
 app.use('/uploads', express.static(path.join('uploads')));
 
-// Routes
+
 app.use('/v1/api/jobseekers', jobseekerRoutes);
 app.use('/v1/api/personal-details', jobseekerPersonalDetailsRoutes);
 app.use('/v1/api/professional-details', jobseekerProfessionalDetailsRoutes);
-// Sync database
+
 sequelize.sync({ alter: true })
   .then(() => console.log('Database connected'))
   .catch(err => console.error('Error syncing database', err));
 
-// Server
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
