@@ -1,8 +1,7 @@
 
 import JobSeekerPersonalDetails from '../models/JobSeekerPersonalDetails.js';
-
+import jwt from 'jsonwebtoken';
 import Joi from 'joi'; 
-
 
 const personalDetailsSchema = Joi.object({
   dateOfBirth: Joi.date().iso().required(), 
@@ -28,10 +27,19 @@ export const addPersonalDetails = async (req, res) => {
       languagePreference,
       disabilityOrHealthCondition,
     });
+          
 
-    res.status(201).json(newDetails);
+    
+    const token = jwt.sign({ userId: newDetails.id }, process.env.JWT_SECRET, {
+      expiresIn: '1h',
+    });
+    res.status(201).json({
+      message: 'Job Seeker  personal details registered successfully',
+      token,
+    });
   } catch (error) {
-    res.status(500).json({ message: 'Error adding personal details', error });
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
   }
 };
 

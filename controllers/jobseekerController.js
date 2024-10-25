@@ -24,8 +24,9 @@ const upload = multer({ storage });
 
 const registrationSchema = Joi.object({
   firstName: Joi.string().min(1).required(),
-  lastName: Joi.string().min(1).required(),
+  lastName: Joi.string().allow('').optional(),
   middleName: Joi.string().allow('').optional(),
+  surName: Joi.string().min(1).required(),
   contactNumber: Joi.string().pattern(/^[0-9]{10}$/).required(), 
   email: Joi.string().email().required(),
   password: Joi.string().min(6).required(),
@@ -44,7 +45,7 @@ export const registerJobSeeker = async (req, res) => {
     return res.status(400).json({ message: error.details[0].message });
   }
 
-  const { firstName, lastName, middleName, contactNumber, email, password } = req.body;
+  const { firstName, lastName, middleName,surName, contactNumber, email, password } = req.body;
 
   try {
     const existingJobSeeker = await JobSeeker.findOne({ where: { email } });
@@ -58,6 +59,7 @@ export const registerJobSeeker = async (req, res) => {
       firstName,
       lastName,
       middleName,
+      surName,
       contactNumber,
       email,
       password: hashedPassword,
@@ -105,7 +107,7 @@ export const getAllJobSeekers = async (req, res) => {
 
   export const updateJobSeeker = async (req, res) => {
     const { id } = req.params;
-    const { firstName, lastName, middleName, contactNumber, email, photo } = req.body;
+    const { firstName, lastName, middleName,surName, contactNumber, email, photo } = req.body;
   
     try {
       const jobSeeker = await JobSeeker.findByPk(id);
@@ -117,6 +119,7 @@ export const getAllJobSeekers = async (req, res) => {
       jobSeeker.firstName = firstName;
       jobSeeker.lastName = lastName;
       jobSeeker.middleName = middleName;
+      jobSeeker.surName = surName;
       jobSeeker.contactNumber = contactNumber;
       jobSeeker.email = email;
       jobSeeker.photo = photo;

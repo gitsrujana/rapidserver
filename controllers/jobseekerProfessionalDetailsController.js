@@ -1,6 +1,6 @@
 
 import JobseekerProfessionalDetails from "../models/JobSeekerProfessionalDetails.js";
-
+import jwt from 'jsonwebtoken';
 import Joi from 'joi'; 
 
 const professionalDetailsSchema = Joi.object({
@@ -28,11 +28,23 @@ export const createJobseekerProfessionalDetails = async (req, res) => {
       licenses,
       careerObjective,
     });
-    res.status(201).json(newDetails);
+
+
+    const token = jwt.sign({ userId: newDetails.id }, process.env.JWT_SECRET, {
+      expiresIn: '1h',
+    });
+
+    res.status(201).json({
+      message: 'Job Seeker professional details registered successfully',
+      token,
+    });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
   }
 };
+
+ 
 
 
 export const getAllJobseekerProfessionalDetails = async (req, res) => {

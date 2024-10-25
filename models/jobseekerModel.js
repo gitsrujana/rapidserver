@@ -10,10 +10,14 @@ const JobSeeker = sequelize.define('JobSeeker', {
   },
   lastName: {
     type: DataTypes.STRING,
-    allowNull: false,
+   
   },
   middleName: {
     type: DataTypes.STRING,
+  },
+  surName:{
+    type:DataTypes.STRING,
+    allowNull: false,
   },
   contactNumber: {
     type: DataTypes.STRING,
@@ -31,6 +35,9 @@ const JobSeeker = sequelize.define('JobSeeker', {
   photo: {
     type: DataTypes.STRING,
   },
+},{
+  tableName:'jobseeker-register',
+  timestamps: true,
 });
 
 export default JobSeeker;
