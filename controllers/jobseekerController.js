@@ -71,32 +71,57 @@ export const generateOtp = () => Math.floor(100000 + Math.random() * 900000).toS
 
 export const storeOtp = async (email, otp) => {
   const hashedOtp = await bcrypt.hash(otp, 10);
-  otpStore[email] = { otp: hashedOtp, expires: Date.now() + 5 * 60 * 1000 }; 
+  otpStore[email] = { otp: hashedOtp, expires: Date.now() + 10 * 60 * 1000 }; 
 };
 
-export const verifyOtp = async(req, res) => {
-    const { email, otp } = req.body;
+// export const verifyOtp = async(req, res) => {
+//     const { email, otp } = req.body;
 
-    if (otpStore[email]) {
-      const { otp: storedOtp, expires } = otpStore[email];
+//     if (otpStore[email]) {
+//       const { otp: storedOtp, expires } = otpStore[email];
 
-      if (Date.now() > expires) {
-          return res.status(400).json({ message: 'OTP expired' });
-      }
+//       if (Date.now() > expires) {
+//           return res.status(400).json({ message: 'OTP expired' });
+//       }
 
-      const isOtpValid = await bcrypt.compare(otp, storedOtp);
+//       const isOtpValid = await bcrypt.compare(otp, storedOtp);
 
-      if (isOtpValid) {
+//       if (isOtpValid) {
        
-          await JobSeeker.update({ isVerified: true }, { where: { email } });
-          delete otpStore[email];  
-          return res.status(200).json({ message: 'OTP verified successfully' });
-      }
-  }
+//           await JobSeeker.update({ isVerified: true }, { where: { email } });
+//           delete otpStore[email];  
+//           return res.status(200).json({ message: 'OTP verified successfully' });
+//       }
+//   }
 
-  return res.status(400).json({ message: 'Invalid or expired OTP' });
+//   return res.status(400).json({ message: 'Invalid or expired OTP' });
+// };
+
+
+
+
+export const verifyOtp = (req, res) => {
+    const { email, otp } = req.body;
+    const otpEntry = otps.get(email);
+
+    if (!otpEntry) {
+        return res.status(400).json({ message: 'OTP not found or expired. Please request a new one.' });
+    }
+
+    const { otp: storedOtp, expires } = otpEntry;
+    if (Date.now() > expires) {
+        otps.delete(email); // Clean up expired OTP
+        return res.status(400).json({ message: 'OTP expired. Please request a new one.' });
+    }
+
+    if (otp !== storedOtp) {
+        return res.status(400).json({ message: 'Invalid OTP. Please try again.' });
+    }
+
+    // If OTP is valid, delete it from storage and proceed with registration
+    otps.delete(email);
+    res.status(200).json({ message: 'OTP verified successfully' });
 };
-
 
 export const registerJobSeeker = async (req, res) => {
     const { error } = registrationSchema.validate(req.body);
