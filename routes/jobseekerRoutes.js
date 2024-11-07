@@ -1,23 +1,29 @@
-import express from "express";
+import express from 'express';
 import {
-  deleteJobSeeker,
-  loginJobSeeker,
-  registerJobSeeker,
-  updateJobSeeker,
-  uploadPhoto,
-} from "../controllers/jobseekerController.js";
-import {
-  getAllJobSeekers,
-  getJobSeekerById,
-} from "../controllers/jobseekerController.js";
-import { protect } from "../middleware/authMiddleware.js";
+    registerJobSeeker,
+    loginJobSeeker,
+    getJobSeekers,
+    getJobSeekerById,
+    updateJobSeeker,
+    deleteJobSeeker,
+    sendOtp,
+    verifyOtp,
+} from '../controllers/jobseekerController.js'
+
 const router = express.Router();
 
-router.post("/register", uploadPhoto, registerJobSeeker);
-router.get("/get-all-jobseekers", getAllJobSeekers);
-router.get("/get-all-jobseekers/:id", getJobSeekerById);
-router.put("/update-jobseekers/:id", protect, updateJobSeeker);
-router.delete("/delete-jobseekers/:id", protect, deleteJobSeeker);
 
-router.post("/jobseekers/login", loginJobSeeker);
+router.post('/send-otp', sendOtp);               
+router.post('/verify-otp', verifyOtp);           
+
+
+router.post('/register', registerJobSeeker);    
+router.post('/login', loginJobSeeker);            
+
+
+router.get('/', getJobSeekers);                  
+router.get('/:id', getJobSeekerById);          
+router.put('/:id', updateJobSeeker);             
+router.delete('/:id', deleteJobSeeker);           
+
 export default router;

@@ -17,10 +17,11 @@ const Employer = sequelize.define('Employer', {
   },
   contactNumber: {
     type: DataTypes.STRING,
+    allowNull: false,
   },
-},{
-    tableName:'employer-registration',
-   timestamps: true,
+}, {
+  tableName: 'employer_register', 
+  timestamps: true, 
 });
 
 export default Employer;
