@@ -37,15 +37,15 @@ const JobSeeker = sequelize.define('JobSeeker', {
     },
     confirmPassword: {
         type: DataTypes.VIRTUAL,
-        allowNull: false,
         validate: {
-            matchesPassword(value) {
-                if (value !== this.password) {
-                    throw new Error("Passwords do not match.");
-                }
-            },
+          matchesPassword(value) {
+            if (value !== this.password) {
+              throw new Error("Passwords do not match.");
+            }
+          },
         },
-    },
+      },
+      
     mobileNumber: {
         type: DataTypes.STRING,
         allowNull: false,
