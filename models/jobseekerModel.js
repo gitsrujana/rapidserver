@@ -3,7 +3,7 @@ import sequelize from '../config/db.js';
 
 const JobSeeker = sequelize.define('JobSeeker', {
     id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         primaryKey: true,
         autoIncrement: true,
     },
@@ -55,7 +55,7 @@ const JobSeeker = sequelize.define('JobSeeker', {
     },
     workStatus: {
         type: DataTypes.ENUM('fresher', 'experienced'),
-        allowNull: false,
+        allowNull: true,
     },
     promotions: {
         type: DataTypes.BOOLEAN,

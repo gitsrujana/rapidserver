@@ -2,10 +2,10 @@ import JobSeeker from "../models/jobseekerModel.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import Joi from "joi";
-
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 import { v4 as uuidv4 } from "uuid";
+import passport from 'passport';
 dotenv.config();
 
 const registrationSchema = Joi.object({
@@ -22,7 +22,7 @@ const registrationSchema = Joi.object({
   mobileNumber: Joi.string()
     .pattern(/^[0-9]{10}$/)
     .required(),
-  workStatus: Joi.string().valid("fresher", "experienced").required(),
+  workStatus: Joi.string().valid("fresher", "experienced").optional(),
   promotions: Joi.boolean(),
   otp: Joi.string().required(),
 });
@@ -231,6 +231,47 @@ export const resetPassword = async (req, res) => {
     res.status(500).json({ message: "Server error", error });
   }
 };
+
+
+
+export const googleAuth = passport.authenticate('google', { scope: ['profile', 'email'] });
+
+export const googleCallback = passport.authenticate('google', {
+  failureRedirect: '/login',
+  successRedirect: '/dashboard',
+});
+
+export const facebookAuth = passport.authenticate('facebook', { scope: ['email'] });
+
+export const facebookCallback = passport.authenticate('facebook', {
+  failureRedirect: '/login',
+  successRedirect: '/dashboard',
+});
+
+export const githubAuth = passport.authenticate('github', { scope: ['user:email'] });
+
+export const githubCallback = passport.authenticate('github', {
+  failureRedirect: '/login',
+  successRedirect: '/dashboard', 
+});
+
+
+
+export const checkAuthStatus = (req, res) => {
+  if (req.isAuthenticated()) {
+    res.json({ authenticated: true, user: req.user });
+  } else {
+    res.json({ authenticated: false });
+  }
+};
+
+export const logout = (req, res, next) => {
+  req.logout((err) => {
+    if (err) return next(err);
+    res.redirect('/');
+  });
+};
+
 
 export const getJobSeekers = async (req, res) => {
   try {
